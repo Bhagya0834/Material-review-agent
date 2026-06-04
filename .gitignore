@@ -1,0 +1,31 @@
+# Environment & secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+venv/
+.venv/
+*.egg-info/
+
+# Database (local only)
+*.db
+*.sqlite3
+
+# Uploaded files (not needed in repo)
+uploads/
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
