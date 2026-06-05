@@ -41,7 +41,7 @@ const History = (() => {
       ).join('');
       return `
       <tr>
-        <td class="text-muted text-sm" style="font-weight:600;">${idx + 1}</td>
+        <td class="text-muted text-sm" style="font-weight:600;">${r.id}</td>
         <td>${r.vendor || '—'}</td>
         <td>${r.material || '—'}</td>
         <td class="text-sm">${r.heat_number || '—'}</td>
