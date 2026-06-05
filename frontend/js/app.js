@@ -51,6 +51,12 @@ const App = {
     return r.json();
   },
 
+  async patch(path, body) {
+    const r = await fetch(API + path, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.detail || r.statusText); }
+    return r.json();
+  },
+
   fmtDate(iso) {
     if (!iso) return '—';
     // Treat stored timestamps as UTC (append Z if no timezone info present)

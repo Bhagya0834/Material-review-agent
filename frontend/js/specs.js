@@ -37,7 +37,10 @@ const Specs = (() => {
             <div style="font-size:14px;font-weight:700;color:var(--text);">${s.name}</div>
             <div class="text-sm text-muted mt-2">${s.standard || ''}${s.grade ? ' · ' + s.grade : ''}</div>
           </div>
-          <button class="btn btn-danger btn-sm" onclick="Specs.delete(${s.id}, '${s.name.replace(/'/g,"\\'")}')">Delete</button>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary btn-sm" onclick="Specs.editSpec(${s.id})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="Specs.delete(${s.id}, '${s.name.replace(/'/g,"\\'")}')">Delete</button>
+          </div>
         </div>
         <div class="flex gap-2 flex-wrap">
           ${s.material_type ? `<span class="cat-pill cat-other">${s.material_type}</span>` : ''}
@@ -268,6 +271,56 @@ const Specs = (() => {
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg> Upload & Process';
+    }
+  }
+
+  let _editingSpecId = null;
+
+  async function editSpec(id) {
+    try {
+      const spec = await App.get(`/api/specs/${id}`);
+      _editingSpecId = id;
+      document.getElementById('edit-spec-name').value          = spec.name          || '';
+      document.getElementById('edit-spec-standard').value      = spec.standard      || '';
+      document.getElementById('edit-spec-grade').value         = spec.grade         || '';
+      document.getElementById('edit-spec-material-type').value = spec.material_type || '';
+      document.getElementById('edit-spec-description').value   = spec.description   || '';
+      document.getElementById('edit-spec-error').classList.add('hidden');
+      document.getElementById('edit-spec-modal').classList.add('active');
+    } catch (e) {
+      alert('Failed to load spec: ' + e.message);
+    }
+  }
+
+  function closeEdit() {
+    document.getElementById('edit-spec-modal').classList.remove('active');
+    _editingSpecId = null;
+  }
+
+  async function saveEdit() {
+    const errEl = document.getElementById('edit-spec-error');
+    const btn   = document.getElementById('edit-spec-btn');
+    const name  = document.getElementById('edit-spec-name').value.trim();
+    if (!name) { errEl.textContent = 'Specification Name is required.'; errEl.classList.remove('hidden'); return; }
+    errEl.classList.add('hidden');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    try {
+      await App.patch(`/api/specs/${_editingSpecId}`, {
+        name,
+        standard:      document.getElementById('edit-spec-standard').value.trim(),
+        grade:         document.getElementById('edit-spec-grade').value.trim(),
+        material_type: document.getElementById('edit-spec-material-type').value.trim(),
+        description:   document.getElementById('edit-spec-description').value.trim(),
+      });
+      closeEdit();
+      await load();
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Save Changes';
     }
   }
 
@@ -537,5 +590,5 @@ const Specs = (() => {
     });
   });
 
-  return { load, filterSpecs, showUpload, closeUpload, onFileChange, upload, delete: del, viewParams, openCustomParams, _saveCustomParam, _deleteCustomParam, _editExtractedParam, _editCustomParam, _deleteExtractedParam, showReupload, _onReuploadFile, _submitReupload };
+  return { load, filterSpecs, showUpload, closeUpload, onFileChange, upload, delete: del, editSpec, closeEdit, saveEdit, viewParams, openCustomParams, _saveCustomParam, _deleteCustomParam, _editExtractedParam, _editCustomParam, _deleteExtractedParam, showReupload, _onReuploadFile, _submitReupload };
 })();

@@ -266,6 +266,45 @@
   </div>
 </div>
 
+<!-- ── Edit Spec Modal ─────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="edit-spec-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Specification</div>
+      <button class="btn-close" onclick="Specs.closeEdit()">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="edit-spec-error" class="alert alert-error hidden"></div>
+      <div class="form-group">
+        <label class="form-label">Specification Name *</label>
+        <input class="form-input" id="edit-spec-name" type="text" placeholder="e.g. Stainless Steel 316L Plate" />
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Standard</label>
+          <input class="form-input" id="edit-spec-standard" type="text" placeholder="e.g. ASTM A240" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Grade</label>
+          <input class="form-input" id="edit-spec-grade" type="text" placeholder="e.g. 316L" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Material Type</label>
+        <input class="form-input" id="edit-spec-material-type" type="text" placeholder="e.g. Stainless Steel, Carbon Steel" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description <span class="text-muted">(optional)</span></label>
+        <textarea class="form-textarea" id="edit-spec-description" placeholder="Add any notes about this specification…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Specs.closeEdit()">Cancel</button>
+      <button class="btn btn-primary" id="edit-spec-btn" onclick="Specs.saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── Review Detail Modal ─────────────────────────────────────────────────── -->
 <div class="modal-overlay" id="review-detail-modal">
   <div class="modal" style="max-width:min(1200px,96vw);width:96vw;">
@@ -277,10 +316,10 @@
   </div>
 </div>
 
-<script src="/js/app.js?v=8"></script>
-<script src="/js/dashboard.js?v=8"></script>
-<script src="/js/specs.js?v=8"></script>
-<script src="/js/review.js?v=8"></script>
-<script src="/js/history.js?v=8"></script>
+<script src="/js/app.js?v=9"></script>
+<script src="/js/dashboard.js?v=9"></script>
+<script src="/js/specs.js?v=9"></script>
+<script src="/js/review.js?v=9"></script>
+<script src="/js/history.js?v=9"></script>
 </body>
 </html>

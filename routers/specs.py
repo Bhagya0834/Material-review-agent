@@ -3,7 +3,9 @@ import shutil
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
+from typing import Optional
 from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -165,6 +167,33 @@ def delete_spec(spec_id: int, db: Session = Depends(get_db)):
     spec.is_active = False
     db.commit()
     return {"message": "Specification deleted."}
+
+
+class SpecUpdate(BaseModel):
+    name: Optional[str] = None
+    standard: Optional[str] = None
+    grade: Optional[str] = None
+    material_type: Optional[str] = None
+    description: Optional[str] = None
+
+
+@router.patch("/{spec_id}")
+def update_spec(spec_id: int, payload: SpecUpdate, db: Session = Depends(get_db)):
+    spec = db.query(Specification).filter(Specification.id == spec_id, Specification.is_active == True).first()
+    if not spec:
+        raise HTTPException(status_code=404, detail="Specification not found")
+    if payload.name is not None:
+        spec.name = payload.name
+    if payload.standard is not None:
+        spec.standard = payload.standard
+    if payload.grade is not None:
+        spec.grade = payload.grade
+    if payload.material_type is not None:
+        spec.material_type = payload.material_type
+    if payload.description is not None:
+        spec.description = payload.description
+    db.commit()
+    return {"id": spec.id, "message": "Specification updated."}
 
 
 # ── Custom Parameters ─────────────────────────────────────────────────────────
