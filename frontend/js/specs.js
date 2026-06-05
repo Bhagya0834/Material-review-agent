@@ -286,14 +286,14 @@ const Specs = (() => {
       document.getElementById('edit-spec-material-type').value = spec.material_type || '';
       document.getElementById('edit-spec-description').value   = spec.description   || '';
       document.getElementById('edit-spec-error').classList.add('hidden');
-      document.getElementById('edit-spec-modal').classList.add('active');
+      document.getElementById('edit-spec-modal').classList.add('open');
     } catch (e) {
       alert('Failed to load spec: ' + e.message);
     }
   }
 
   function closeEdit() {
-    document.getElementById('edit-spec-modal').classList.remove('active');
+    document.getElementById('edit-spec-modal').classList.remove('open');
     _editingSpecId = null;
   }
 

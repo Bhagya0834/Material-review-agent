@@ -1,7 +1,10 @@
 /* ── Dashboard ──────────────────────────────────────────────────────────── */
 const Dashboard = (() => {
-  let monthlyChart = null;
-  let donutChart   = null;
+  let monthlyChart   = null;
+  let donutChart     = null;
+  let vendorChart    = null;
+  let materialChart  = null;
+  let specChart      = null;
 
   async function load() {
     try {
@@ -9,6 +12,9 @@ const Dashboard = (() => {
       _renderStats(d);
       _renderMonthly(d.monthly || {});
       _renderDonut(d.approved || 0, d.under_review || 0, d.rejected || 0);
+      _renderBreakdown('chart-vendor',   vendorChart,   d.top_vendors   || [], c => vendorChart   = c);
+      _renderBreakdown('chart-material', materialChart, d.top_materials || [], c => materialChart = c);
+      _renderBreakdown('chart-spec',     specChart,     d.top_specs     || [], c => specChart     = c);
       _renderRecent(d.recent_reviews || []);
     } catch (e) {
       console.error('Dashboard load error', e);
@@ -81,6 +87,43 @@ const Dashboard = (() => {
         },
       },
     });
+  }
+
+  function _renderBreakdown(canvasId, existingChart, items, setter) {
+    if (existingChart) existingChart.destroy();
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    if (!items.length) {
+      canvas.parentElement.innerHTML += '<p style="text-align:center;padding:20px;color:var(--text-2);font-size:12px;">No data yet</p>';
+      return;
+    }
+    const labels   = items.map(i => i.label.length > 22 ? i.label.slice(0, 22) + '…' : i.label);
+    const approved = items.map(i => i.approved    || 0);
+    const under    = items.map(i => i.under_review || 0);
+    const rejected = items.map(i => i.rejected    || 0);
+    const chart = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Approved',     data: approved, backgroundColor: '#16a34a', borderRadius: 3 },
+          { label: 'Under Review', data: under,    backgroundColor: '#d97706', borderRadius: 3 },
+          { label: 'Rejected',     data: rejected, backgroundColor: '#dc2626', borderRadius: 3 },
+        ],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 }, padding: 8 } },
+        },
+        scales: {
+          x: { stacked: true, beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#f1f5f9' } },
+          y: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+        },
+      },
+    });
+    setter(chart);
   }
 
   function _renderRecent(reviews) {
