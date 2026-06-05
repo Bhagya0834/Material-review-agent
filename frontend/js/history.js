@@ -32,7 +32,7 @@ const History = (() => {
   function _render(reviews) {
     const tbody = document.getElementById('history-body');
     if (!reviews.length) {
-      tbody.innerHTML = '<tr><td colspan="11" class="text-muted" style="text-align:center;padding:32px;">No reviews found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="12" class="text-muted" style="text-align:center;padding:32px;">No reviews found.</td></tr>';
       return;
     }
     tbody.innerHTML = reviews.map((r, idx) => {
@@ -57,6 +57,7 @@ const History = (() => {
           ${App.statusBadge(displayStatus)}
           ${r.reviewer_decision ? '<span class="text-xs text-muted" style="display:block;margin-top:2px;">Overridden</span>' : ''}
         </td>
+        <td class="text-sm text-muted">${r.reviewer_name || '—'}</td>
         <td class="text-sm text-muted">${App.fmtDate(r.created_at)}</td>
         <td style="min-width:170px;">
           ${r.status !== 'PROCESSING' ? `

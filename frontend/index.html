@@ -89,18 +89,46 @@
           </div>
         </div>
 
-        <div class="grid-3 mb-5">
+        <div class="grid-2 mb-5">
           <div class="card">
-            <div class="card-header"><div><div class="card-title">Reviews by Vendor</div><div class="card-subtitle">Top 5 vendors · pass/fail split</div></div></div>
-            <canvas id="chart-vendor" height="200"></canvas>
+            <div class="card-header">
+              <div><div class="card-title">Reviews by Vendor</div><div class="card-subtitle">Monthly trend · top 5</div></div>
+              <div style="position:relative;">
+                <button class="btn btn-secondary btn-sm" id="filter-btn-vendor" onclick="Dashboard.toggleFilter('vendor')">All Months ▾</button>
+                <div id="filter-panel-vendor" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px;z-index:200;min-width:160px;box-shadow:0 4px 16px rgba(0,0,0,.15);"></div>
+              </div>
+            </div>
+            <canvas id="chart-vendor" height="220"></canvas>
           </div>
           <div class="card">
-            <div class="card-header"><div><div class="card-title">Reviews by Material</div><div class="card-subtitle">Top 5 materials reviewed</div></div></div>
-            <canvas id="chart-material" height="200"></canvas>
+            <div class="card-header">
+              <div><div class="card-title">Reviews by Material</div><div class="card-subtitle">Monthly trend · top 5</div></div>
+              <div style="position:relative;">
+                <button class="btn btn-secondary btn-sm" id="filter-btn-material" onclick="Dashboard.toggleFilter('material')">All Months ▾</button>
+                <div id="filter-panel-material" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px;z-index:200;min-width:160px;box-shadow:0 4px 16px rgba(0,0,0,.15);"></div>
+              </div>
+            </div>
+            <canvas id="chart-material" height="220"></canvas>
           </div>
           <div class="card">
-            <div class="card-header"><div><div class="card-title">Reviews by Specification</div><div class="card-subtitle">Top 5 specs matched</div></div></div>
-            <canvas id="chart-spec" height="200"></canvas>
+            <div class="card-header">
+              <div><div class="card-title">Reviews by Specification</div><div class="card-subtitle">Monthly trend · top 5</div></div>
+              <div style="position:relative;">
+                <button class="btn btn-secondary btn-sm" id="filter-btn-spec" onclick="Dashboard.toggleFilter('spec')">All Months ▾</button>
+                <div id="filter-panel-spec" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px;z-index:200;min-width:160px;box-shadow:0 4px 16px rgba(0,0,0,.15);"></div>
+              </div>
+            </div>
+            <canvas id="chart-spec" height="220"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Reviews by Reviewer</div><div class="card-subtitle">Monthly trend · all reviewers</div></div>
+              <div style="position:relative;">
+                <button class="btn btn-secondary btn-sm" id="filter-btn-reviewer" onclick="Dashboard.toggleFilter('reviewer')">All Months ▾</button>
+                <div id="filter-panel-reviewer" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px;z-index:200;min-width:160px;box-shadow:0 4px 16px rgba(0,0,0,.15);"></div>
+              </div>
+            </div>
+            <canvas id="chart-reviewer" height="220"></canvas>
           </div>
         </div>
 
@@ -212,7 +240,7 @@
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>S.NO</th><th>Vendor</th><th>Material</th><th>Heat No.</th><th>Specification</th><th>Score</th><th>Status</th><th>Date</th><th>Override</th><th>Remark</th><th></th></tr></thead>
+            <thead><tr><th>S.NO</th><th>Vendor</th><th>Material</th><th>Heat No.</th><th>Specification</th><th>Score</th><th>Status</th><th>Reviewer</th><th>Date</th><th>Override</th><th>Remark</th><th></th></tr></thead>
             <tbody id="history-body"><tr><td colspan="9" class="text-muted" style="text-align:center;padding:24px;">Loading…</td></tr></tbody>
           </table>
         </div>
@@ -347,10 +375,10 @@
   </div>
 </div>
 
-<script src="/js/app.js?v=12"></script>
-<script src="/js/dashboard.js?v=12"></script>
-<script src="/js/specs.js?v=12"></script>
-<script src="/js/review.js?v=12"></script>
-<script src="/js/history.js?v=12"></script>
+<script src="/js/app.js?v=13"></script>
+<script src="/js/dashboard.js?v=13"></script>
+<script src="/js/specs.js?v=13"></script>
+<script src="/js/review.js?v=13"></script>
+<script src="/js/history.js?v=13"></script>
 </body>
 </html>

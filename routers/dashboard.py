@@ -83,9 +83,10 @@ def get_stats(db: Session = Depends(get_db)):
                            if (approved + under_review + rejected) > 0 else None,
         "monthly":         dict(monthly),
         "trend_months":    trend_months,
-        "vendor_trends":   _monthly_trends("vendor",   recent, trend_months),
-        "material_trends": _monthly_trends("material", recent, trend_months),
-        "spec_trends":     _monthly_trends("spec_name",recent, trend_months),
+        "vendor_trends":   _monthly_trends("vendor",        recent, trend_months),
+        "material_trends": _monthly_trends("material",      recent, trend_months),
+        "spec_trends":     _monthly_trends("spec_name",     recent, trend_months),
+        "reviewer_trends": _monthly_trends("reviewer_name", recent, trend_months),
         "recent_reviews": [
             {
                 "id":         r.id,
