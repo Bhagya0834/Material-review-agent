@@ -32,7 +32,7 @@ const History = (() => {
   function _render(reviews) {
     const tbody = document.getElementById('history-body');
     if (!reviews.length) {
-      tbody.innerHTML = '<tr><td colspan="12" class="text-muted" style="text-align:center;padding:32px;">No reviews found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="13" class="text-muted" style="text-align:center;padding:32px;">No reviews found.</td></tr>';
       return;
     }
     tbody.innerHTML = reviews.map((r, idx) => {
@@ -46,6 +46,7 @@ const History = (() => {
         <td>${r.vendor || '—'}</td>
         <td>${r.material || '—'}</td>
         <td class="text-sm">${r.heat_number || '—'}</td>
+        <td class="text-sm">${r.po_number || '—'}</td>
         <td class="truncate" style="max-width:140px;">${r.spec_name || '—'}</td>
         <td>
           ${r.score != null
