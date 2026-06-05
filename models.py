@@ -50,6 +50,15 @@ class Specification(Base):
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
 
+class Reviewer(Base):
+    """Named reviewers — shared list across all sessions."""
+    __tablename__ = "reviewers"
+
+    id         = Column(Integer, primary_key=True, index=True)
+    name       = Column(String, nullable=False, unique=True)
+    created_at = Column(DateTime, server_default=func.now())
+
+
 class Review(Base):
     __tablename__ = "reviews"
 
@@ -74,6 +83,7 @@ class Review(Base):
     error_message = Column(Text, default="")
     created_at = Column(DateTime, server_default=func.now())
     reviewed_at = Column(DateTime, nullable=True)
+    reviewer_name     = Column(String, nullable=True)    # Who submitted this review
     reviewer_decision = Column(String, nullable=True)   # Manual override: APPROVED | UNDER_REVIEW | REJECTED
     reviewer_comment  = Column(Text, nullable=True)     # Reviewer's reason / notes
     reviewer_at       = Column(DateTime, nullable=True)

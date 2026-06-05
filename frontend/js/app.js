@@ -57,6 +57,12 @@ const App = {
     return r.json();
   },
 
+  async postJson(path, body) {
+    const r = await fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.detail || r.statusText); }
+    return r.json();
+  },
+
   fmtDate(iso) {
     if (!iso) return '—';
     // Treat stored timestamps as UTC (append Z if no timezone info present)

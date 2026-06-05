@@ -17,11 +17,12 @@ const History = (() => {
     const status = document.getElementById('history-status-filter')?.value || '';
     const filtered = allReviews.filter(r => {
       const matchQ = !q ||
-        (r.vendor      || '').toLowerCase().includes(q) ||
-        (r.material    || '').toLowerCase().includes(q) ||
-        (r.spec_name   || '').toLowerCase().includes(q) ||
-        (r.heat_number || '').toLowerCase().includes(q) ||
-        (r.po_number   || '').toLowerCase().includes(q);
+        (r.vendor         || '').toLowerCase().includes(q) ||
+        (r.material       || '').toLowerCase().includes(q) ||
+        (r.spec_name      || '').toLowerCase().includes(q) ||
+        (r.heat_number    || '').toLowerCase().includes(q) ||
+        (r.po_number      || '').toLowerCase().includes(q) ||
+        (r.reviewer_name  || '').toLowerCase().includes(q);
       const matchS = !status || r.status === status;
       return matchQ && matchS;
     });
@@ -145,6 +146,13 @@ const History = (() => {
                   ${p.name}${p.symbol ? ` (${p.symbol})` : ''} — Actual: ${p.actual_value ?? '—'} | Spec: ${p.spec_min ?? '—'} to ${p.spec_max ?? '—'} ${p.spec_unit || ''}
                 </span>`).join('')}
             </div>
+          </div>` : ''}
+
+        <!-- Reviewer name badge -->
+        ${r.reviewer_name ? `
+          <div class="text-sm text-muted mb-3" style="display:flex;align-items:center;gap:6px;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Reviewed by <strong>${r.reviewer_name}</strong>
           </div>` : ''}
 
         <!-- Reviewer comment (if any) -->

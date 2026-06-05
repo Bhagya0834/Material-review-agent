@@ -135,6 +135,22 @@
               <div class="card">
                 <div class="card-header"><div class="card-title">Review Details</div></div>
                 <div class="form-group">
+                  <label class="form-label">Reviewer Name <span class="text-muted">(optional)</span></label>
+                  <div class="flex gap-2">
+                    <select class="form-select" id="reviewer-select" style="flex:1;">
+                      <option value="">— Select reviewer —</option>
+                    </select>
+                    <button class="btn btn-secondary btn-sm" onclick="Review.showAddReviewer()" id="add-reviewer-btn" title="Add new reviewer">+ New</button>
+                  </div>
+                  <div id="add-reviewer-form" class="hidden" style="display:none;margin-top:8px;">
+                    <div class="flex gap-2">
+                      <input class="form-input" id="new-reviewer-name" type="text" placeholder="Enter reviewer name…" style="flex:1;" onkeydown="if(event.key==='Enter')Review.addReviewer()" />
+                      <button class="btn btn-primary btn-sm" onclick="Review.addReviewer()">Save</button>
+                      <button class="btn btn-secondary btn-sm" onclick="Review.hideAddReviewer()">✕</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="form-label">PO / Order Reference <span class="text-muted">(optional)</span></label>
                   <input class="form-input" id="po-number" type="text" placeholder="e.g. PO-2024-0012" />
                 </div>
@@ -331,10 +347,10 @@
   </div>
 </div>
 
-<script src="/js/app.js?v=11"></script>
-<script src="/js/dashboard.js?v=11"></script>
-<script src="/js/specs.js?v=11"></script>
-<script src="/js/review.js?v=11"></script>
-<script src="/js/history.js?v=11"></script>
+<script src="/js/app.js?v=12"></script>
+<script src="/js/dashboard.js?v=12"></script>
+<script src="/js/specs.js?v=12"></script>
+<script src="/js/review.js?v=12"></script>
+<script src="/js/history.js?v=12"></script>
 </body>
 </html>

@@ -27,7 +27,46 @@ const Review = (() => {
     document.getElementById('review-processing').classList.add('hidden');
     document.getElementById('review-result').classList.add('hidden');
     _updateStartBtn();
-    await _loadSpecs();
+    await Promise.all([_loadSpecs(), _loadReviewers()]);
+  }
+
+  async function _loadReviewers() {
+    try {
+      const list = await App.get('/api/reviewers/');
+      const sel  = document.getElementById('reviewer-select');
+      const prev = sel.value;
+      sel.innerHTML = '<option value="">— Select reviewer —</option>' +
+        list.map(r => `<option value="${r.name}">${r.name}</option>`).join('');
+      if (prev) sel.value = prev;
+    } catch (_) {}
+  }
+
+  function showAddReviewer() {
+    const form = document.getElementById('add-reviewer-form');
+    form.style.display = 'flex';
+    form.classList.remove('hidden');
+    document.getElementById('new-reviewer-name').focus();
+  }
+
+  function hideAddReviewer() {
+    const form = document.getElementById('add-reviewer-form');
+    form.style.display = 'none';
+    form.classList.add('hidden');
+    document.getElementById('new-reviewer-name').value = '';
+  }
+
+  async function addReviewer() {
+    const input = document.getElementById('new-reviewer-name');
+    const name  = input.value.trim();
+    if (!name) return;
+    try {
+      await App.postJson('/api/reviewers/', { name });
+      await _loadReviewers();
+      document.getElementById('reviewer-select').value = name;
+      hideAddReviewer();
+    } catch (e) {
+      alert('Could not save reviewer: ' + e.message);
+    }
   }
 
   async function _loadSpecs() {
@@ -102,9 +141,10 @@ const Review = (() => {
     _animateSteps();
 
     const fd = new FormData();
-    fd.append('file',      selectedFile);
-    fd.append('spec_id',   selectedSpecId);
-    fd.append('po_number', document.getElementById('po-number').value.trim());
+    fd.append('file',          selectedFile);
+    fd.append('spec_id',       selectedSpecId);
+    fd.append('po_number',     document.getElementById('po-number').value.trim());
+    fd.append('reviewer_name', document.getElementById('reviewer-select').value.trim());
 
     try {
       const res = await App.post('/api/reviews/start', fd);
@@ -283,5 +323,5 @@ const Review = (() => {
     });
   });
 
-  return { init, onFileChange, filterSpecs, selectSpec, start, _specsCache };
+  return { init, onFileChange, filterSpecs, selectSpec, start, showAddReviewer, hideAddReviewer, addReviewer, _specsCache };
 })();

@@ -136,6 +136,7 @@ async def start_review(
     file: UploadFile = File(...),
     spec_id: int = Form(...),
     po_number: str = Form(""),
+    reviewer_name: str = Form(""),
     db: Session = Depends(get_db),
 ):
     spec = db.query(Specification).filter(Specification.id == spec_id, Specification.is_active == True).first()
@@ -153,6 +154,7 @@ async def start_review(
         spec_id=spec_id,
         spec_name=spec.name,
         po_number=po_number,
+        reviewer_name=reviewer_name.strip() or None,
         cert_filename=file.filename,
         cert_file_path=dest,
         status="PROCESSING",
@@ -231,6 +233,7 @@ def _review_summary(r: Review) -> dict:
         "passed": r.passed,
         "failed": r.failed,
         "not_found": r.not_found,
+        "reviewer_name":     r.reviewer_name,
         "reviewer_decision": r.reviewer_decision,
         "reviewer_comment":  r.reviewer_comment,
         "reviewer_at":       r.reviewer_at.isoformat() if r.reviewer_at else None,

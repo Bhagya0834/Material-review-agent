@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database import create_tables
 from config import UPLOAD_DIR, SPECS_DIR, CERTS_DIR
-from routers import specs, reviews, dashboard
+from routers import specs, reviews, dashboard, reviewers
 
 app = FastAPI(title="Material Review Agent", version="1.0.0")
 
@@ -21,9 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(specs.router, prefix="/api/specs", tags=["Specifications"])
-app.include_router(reviews.router, prefix="/api/reviews", tags=["Reviews"])
+app.include_router(specs.router,     prefix="/api/specs",     tags=["Specifications"])
+app.include_router(reviews.router,   prefix="/api/reviews",   tags=["Reviews"])
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
+app.include_router(reviewers.router, prefix="/api/reviewers", tags=["Reviewers"])
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "frontend")
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
@@ -58,6 +59,7 @@ def _migrate_db():
         ("reviews",  "reviewer_decision", "VARCHAR"),
         ("reviews",  "reviewer_comment",  "TEXT"),
         ("reviews",  "reviewer_at",       "DATETIME"),
+        ("reviews",  "reviewer_name",     "VARCHAR"),
     ]
     with engine.connect() as conn:
         for table, col, col_type in new_cols:
